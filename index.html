@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biotechnology and Natural Products Research Group</title>
+
+<style>
+body {
+font-family: Arial, Helvetica, sans-serif;
+margin: 0;
+background: #ffffff;
+color: #222;
+line-height: 1.6;
+}
+
+header {
+background: #f7f7f7;
+padding: 60px 20px;
+text-align: center;
+}
+
+section {
+max-width: 900px;
+margin: auto;
+padding: 40px 20px;
+}
+
+h1 {
+font-size: 40px;
+margin-bottom: 10px;
+}
+
+h2 {
+border-bottom: 2px solid #ddd;
+padding-bottom: 10px;
+}
+
+.tagline {
+font-style: italic;
+color: #555;
+margin-top: 10px;
+}
+
+.affiliation {
+margin-top: 20px;
+font-size: 14px;
+color: #666;
+}
+
+.publication {
+margin-bottom: 18px;
+}
+
+footer {
+background: #f7f7f7;
+text-align: center;
+padding: 30px;
+margin-top: 40px;
+font-size: 14px;
+color: #666;
+}
+
+select {
+padding: 6px;
+margin-top: 10px;
+}
+</style>
+
+<script>
+function filterPublications() {
+let year = document.getElementById("yearFilter").value;
+let pubs = document.getElementsByClassName("publication");
+
+for (let i = 0; i < pubs.length; i++) {
+if (year === "all") {
+pubs[i].style.display = "block";
+}
+else {
+if (pubs[i].dataset.year === year) {
+pubs[i].style.display = "block";
+}
+else {
+pubs[i].style.display = "none";
+}
+}
+}
+}
+</script>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Biotechnology and Natural Products</h1>
+
+<p class="tagline">
+We love plants, we love chemistry.
+</p>
+
+<p class="affiliation">
+Biotechnology and Natural Products Research Group<br>
+Department of Pharmaceutical and Chemical Sciences<br>
+Universidad Icesi – Cali, Colombia
+</p>
+
+</header>
+
+
+<section>
+
+<h2>About the Group</h2>
+
+<p>
+The Biotechnology and Natural Products Research Group develops experimental research at the interface of phytochemistry, analytical chemistry, plant biotechnology, and biomass valorization. Our work focuses on plant-derived specialized metabolites, particularly pentacyclic triterpene acids from Cecropia species, and their applications in health-related and bioeconomy-oriented research.
+</p>
+
+<p>
+We integrate chromatographic analysis, metabolomics, and experimental phytochemistry to understand biosynthetic pathways, characterize complex botanical materials, and support the development of sustainable plant-based bioproducts.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Research Lines</h2>
+
+<ul>
+
+<li>Natural products discovery and phytochemical characterization</li>
+
+<li>Pentacyclic triterpene acids from Cecropia angustifolia</li>
+
+<li>Plant biotechnology and in-vitro biomass production</li>
+
+<li>Metabolomics and chromatographic analysis of plant materials</li>
+
+<li>Biomass valorization within bioeconomy frameworks</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Team</h2>
+
+<p>
+<strong>Guillermo Montoya, PhD</strong><br>
+Group Leader – Pharmacognosy, phytochemistry, natural products, and biomass valorization.
+</p>
+
+<p>
+Research team composed of undergraduate and graduate students contributing to experimental work in phytochemistry, plant biotechnology, analytical chemistry, and metabolomics.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Selected Experimental Publications (2018 onward)</h2>
+
+<label>Filter by year:</label><br>
+
+<select id="yearFilter" onchange="filterPublications()">
+<option value="all">All</option>
+<option value="2025">2025</option>
+<option value="2024">2024</option>
+<option value="2023">2023</option>
+</select>
+
+
+<div class="publication" data-year="2025">
+2025 — Comparative Metabolic Profiling of Wild and In Vitro Cultivated Cecropia angustifolia Roots Fraction Reveals Conservation of Pentacyclic Triterpene Acid Biosynthesis. <em>Phytochemical Analysis</em>
+</div>
+
+<div class="publication" data-year="2025">
+2025 — Integrative metabolomic and transcriptomic analysis reveals CYP450-driven biosynthesis of pentacyclic triterpene acids in Cecropia angustifolia. <em>Plant Cell, Tissue and Organ Culture</em>
+</div>
+
+<div class="publication" data-year="2024">
+2024 — Unveiling Colombia's medicinal Cannabis sativa treasure: physicochemical and phytochemical descriptors for targeted germplasm valorization in the sustainable food chain. <em>Phytochemical Analysis</em>
+</div>
+
+<div class="publication" data-year="2023">
+2023 — Pharmacokinetic assessment and phytochemical triterpene control from Cecropia angustifolia using plant biotechnology. <em>Phytochemical Analysis</em>
+</div>
+
+</section>
+
+
+<section>
+
+<h2>Contact</h2>
+
+<p>
+
+Email:
+<a href="mailto:glmontoya@icesi.edu.co">
+glmontoya@icesi.edu.co
+</a>
+
+</p>
+
+<p>
+
+ORCID:
+<a href="https://orcid.org/0000-0003-3963-9007" target="_blank">
+0000-0003-3963-9007
+</a>
+
+</p>
+
+<p>
+
+Google Scholar:
+<a href="https://scholar.google.com/citations?user=d5EIenEAAAAJ&hl=en" target="_blank">
+Profile link
+</a>
+
+</p>
+
+</section>
+
+
+<footer>
+
+Biotechnology and Natural Products Research Group  
+Universidad Icesi – Colombia
+
+</footer>
+
+
+</body>
+</html>
