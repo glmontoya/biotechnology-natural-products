@@ -2,406 +2,310 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biotechnology and Natural Products Research Group</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biotechnology and Natural Products Research Group</title>
 
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      background: #f4f6fb;
-      color: #1a1a1a;
-      line-height: 1.6;
-    }
+<style>
 
-    header {
-      background: linear-gradient(to right, #2f4fa2, #4c6edb);
-      color: white;
-      padding: 70px 20px;
-      text-align: center;
-    }
+body {
+font-family: Arial, Helvetica, sans-serif;
+margin: 0;
+background: #f4f6fb;
+color: #1a1a1a;
+line-height: 1.6;
+}
 
-    h1 {
-      font-size: 44px;
-      margin-bottom: 10px;
-    }
+/* HEADER */
 
-    h2 {
-      color: #2f4fa2;
-      border-left: 6px solid #4c6edb;
-      padding-left: 10px;
-      margin-top: 0;
-    }
+header {
+background: linear-gradient(to right,#2f4fa2,#4c6edb);
+color: white;
+padding: 70px 20px;
+text-align: center;
+}
 
-    section {
-      max-width: 950px;
-      margin: auto;
-      padding: 40px 20px;
-      background: white;
-      margin-bottom: 25px;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
+header h1 {
+margin-bottom: 10px;
+}
 
-    .tagline {
-      font-style: italic;
-      opacity: 0.95;
-    }
+.tagline {
+font-style: italic;
+font-size: 18px;
+}
 
-    .affiliation {
-      margin-top: 20px;
-      font-size: 14px;
-      opacity: 0.95;
-    }
+.affiliation {
+margin-top: 15px;
+font-size: 14px;
+opacity: 0.95;
+}
 
-    a {
-      color: #2f4fa2;
-      text-decoration: none;
-    }
+/* SECTIONS */
 
-    a:hover {
-      text-decoration: underline;
-    }
+section {
+max-width: 1000px;
+margin: auto;
+padding: 40px 20px;
+}
 
-    .team-photo {
-      width: 220px;
-      border-radius: 8px;
-      margin-top: 20px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.18);
-    }
+h2 {
+border-bottom: 2px solid #dce3fb;
+padding-bottom: 8px;
+color: #2f4fa2;
+}
 
-    .poster-thumb {
-      width: 260px;
-      margin: 15px;
-      border-radius: 6px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-      transition: transform 0.2s ease;
-    }
+/* TEAM */
 
-    .poster-thumb:hover {
-      transform: scale(1.05);
-    }
+.team-photo {
+width: 200px;
+border-radius: 6px;
+margin-top: 15px;
+}
 
-    .poster-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+/* POSTER GRID */
 
-    .publication-controls {
-      margin-bottom: 25px;
-    }
+.poster-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+gap: 18px;
+margin-top: 25px;
+}
 
-    .publication-controls label {
-      font-weight: bold;
-      color: #2f4fa2;
-      margin-right: 10px;
-    }
+.poster-thumb {
+width: 100%;
+border-radius: 6px;
+box-shadow: 0px 4px 10px rgba(0,0,0,0.12);
+transition: transform 0.2s ease;
+}
 
-    select {
-      padding: 8px 10px;
-      border: 1px solid #b8c6f0;
-      border-radius: 4px;
-      background: white;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 14px;
-    }
+.poster-thumb:hover {
+transform: scale(1.03);
+}
 
-    .year-group {
-      margin-top: 30px;
-    }
+/* PUBLICATIONS */
 
-    .year-title {
-      color: #2f4fa2;
-      font-size: 24px;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #dce3fb;
-      padding-bottom: 6px;
-    }
+.publication {
+margin-bottom: 12px;
+}
 
-    .publication {
-      margin-bottom: 18px;
-      padding: 14px 16px;
-      border-left: 4px solid #4c6edb;
-      background: #f8faff;
-      border-radius: 4px;
-    }
+select {
+padding: 6px;
+margin-top: 10px;
+}
 
-    .publication-title {
-      font-weight: bold;
-    }
+/* FOOTER */
 
-    .publication-doi {
-      margin-top: 6px;
-      font-size: 14px;
-      word-break: break-word;
-    }
+footer {
+background: #eef1fb;
+text-align: center;
+padding: 30px;
+font-size: 14px;
+margin-top: 40px;
+}
 
-    .earlier-publication {
-      margin-top: 25px;
-      padding: 16px;
-      background: #f7f7f7;
-      border-left: 4px solid #9aa7d9;
-      border-radius: 4px;
-    }
+</style>
 
-    footer {
-      background: #e9edfb;
-      text-align: center;
-      padding: 30px;
-      margin-top: 40px;
-      font-size: 14px;
-    }
+<script>
 
-    @media (max-width: 700px) {
-      h1 {
-        font-size: 32px;
-      }
+function filterPublications() {
 
-      .team-photo {
-        width: 180px;
-      }
+let year = document.getElementById("yearFilter").value;
 
-      .poster-thumb {
-        width: 90%;
-        max-width: 300px;
-      }
+let pubs = document.getElementsByClassName("publication");
 
-      section {
-        padding: 30px 16px;
-      }
-    }
-  </style>
+for (let i = 0; i < pubs.length; i++) {
 
-  <script>
-    function filterPublicationsByYear() {
-      const selectedYear = document.getElementById("yearFilter").value;
-      const groups = document.getElementsByClassName("year-group");
+if (year === "all") {
+pubs[i].style.display = "block";
+}
 
-      for (let i = 0; i < groups.length; i++) {
-        const groupYear = groups[i].getAttribute("data-year");
+else if (pubs[i].dataset.year === year) {
+pubs[i].style.display = "block";
+}
 
-        if (selectedYear === "all" || selectedYear === groupYear) {
-          groups[i].style.display = "block";
-        } else {
-          groups[i].style.display = "none";
-        }
-      }
-    }
-  </script>
+else {
+pubs[i].style.display = "none";
+}
+
+}
+
+}
+
+</script>
+
 </head>
+
 
 <body>
 
-  <header>
-    <h1>Biotechnology and Natural Products</h1>
 
-    <p class="tagline">
-      We love plants, we love chemistry.
-    </p>
+<header>
 
-    <p class="affiliation">
-      Biotechnology and Natural Products Research Group<br>
-      Department of Pharmaceutical and Chemical Sciences<br>
-      Universidad Icesi – Cali, Colombia
-    </p>
-  </header>
+<h1>Biotechnology and Natural Products</h1>
 
-  <section>
-    <h2>About the Group</h2>
+<div class="tagline">
+We love plants, we love chemistry
+</div>
 
-    <p>
-      The Biotechnology and Natural Products Research Group develops experimental research at the interface of phytochemistry, analytical chemistry, plant biotechnology, and biomass valorization. Our work focuses on plant-derived specialized metabolites, particularly pentacyclic triterpene acids from <em>Cecropia</em> species, and their applications in health-related and bioeconomy-oriented research.
-    </p>
+<div class="affiliation">
+Biotechnology and Natural Products Research Group<br>
+Department of Pharmaceutical and Chemical Sciences<br>
+Universidad Icesi – Cali, Colombia
+</div>
 
-    <p>
-      We integrate chromatographic analysis, metabolomics, and experimental phytochemistry to understand biosynthetic pathways, characterize complex botanical materials, and support the development of sustainable plant-based bioproducts.
-    </p>
-  </section>
+</header>
 
-  <section>
-    <h2>Research Areas</h2>
 
-    <ul>
-      <li>Natural products chemistry</li>
-      <li>Plant metabolomics</li>
-      <li>Analytical phytochemistry</li>
-      <li>Pentacyclic triterpene biosynthesis</li>
-      <li>Plant biotechnology platforms</li>
-      <li>Biomass valorization</li>
-    </ul>
-  </section>
 
-  <section>
-    <h2>Team</h2>
+<section>
 
-    <div style="text-align:center;">
-      <img src="GM2.JPG" class="team-photo" alt="Guillermo Montoya">
+<h2>About the Group</h2>
 
-      <p>
-        <strong>Guillermo Montoya, PhD</strong><br>
-        Group Leader – Biomass valorization, phytochemistry, metabolomics and plant biotechnology
-      </p>
-    </div>
-  </section>
+<p>
+The Biotechnology and Natural Products Research Group develops experimental research at the interface of phytochemistry, analytical chemistry, plant biotechnology, and biomass valorization. Our work focuses on plant-derived specialized metabolites, particularly pentacyclic triterpene acids from Cecropia species, and their applications in health-related and bioeconomy-oriented research.
+</p>
 
-  <section>
-    <h2>Research Posters</h2>
+<p>
+We integrate chromatographic analysis, metabolomics, and experimental phytochemistry to understand biosynthetic pathways, characterize complex botanical materials, and support the development of sustainable plant-based bioproducts.
+</p>
 
-    <div class="poster-grid">
-      <a href="pkpd.html"><img src="PKPD.png" class="poster-thumb" alt="PKPD poster"></a>
-      <a href="plant-biotech.html"><img src="APPS2.png" class="poster-thumb" alt="Plant biotechnology poster"></a>
-      <a href="fticrms.html"><img src="UHMS.png" class="poster-thumb" alt="FT-ICR-MS poster"></a>
-      <a href="cyp450.html"><img src="PTTOC.png" class="poster-thumb" alt="CYP450 poster"></a>
-      <a href="cannabis.html"><img src="Cannabis.png" class="poster-thumb" alt="Cannabis poster"></a>
-      <a href="capsicum1.html"><img src="CAP1.png" class="poster-thumb" alt="Capsicum descriptors poster"></a>
-      <a href="capsicum2.html"><img src="CAP2.png" class="poster-thumb" alt="Capsicum pangenomics poster"></a>
-    </div>
-  </section>
+</section>
 
-  <section>
-    <h2>Selected Publications</h2>
 
-    <div class="publication-controls">
-      <label for="yearFilter">Filter by year:</label>
-      <select id="yearFilter" onchange="filterPublicationsByYear()">
-        <option value="all">2018–Present (All)</option>
-        <option value="2025">2025</option>
-        <option value="2023">2023</option>
-        <option value="2021">2021</option>
-        <option value="2020">2020</option>
-        <option value="2018">2018</option>
-      </select>
-    </div>
 
-    <div class="year-group" data-year="2025">
-      <div class="year-title">2025</div>
+<section>
 
-      <div class="publication">
-        <div class="publication-title">
-          Vivas-Moncayo, J.E., Muñoz-Bonilla, P.C., Rodriguez-Santa, L.M. et al. Integrative metabolomic and transcriptomic analysis reveals CYP450-driven biosynthesis of pentacyclic triterpene acids in Cecropia angustifolia. <em>Plant Cell Tiss Organ Cult</em> 163, 118 (2025).
-        </div>
-        <div class="publication-doi">
-          DOI:
-          <a href="https://doi.org/10.1007/s11240-025-03285-y" target="_blank">
-            https://doi.org/10.1007/s11240-025-03285-y
-          </a>
-        </div>
-      </div>
+<h2>Team</h2>
 
-      <div class="publication">
-        <div class="publication-title">
-          Lopez-Cortes, J. V.; Acin-Martinez, S.; Montoya, G.; Balcazar, N. Cecropia Angustifolia Pentacyclic Triterpene Acids and Sacha Inchi Oil Improve Carbohydrate Metabolism and Inflammation in Prediabetic Mice. <em>Adv Pharmacol Pharm Sci</em>, 2025, 2025 (1).
-        </div>
-        <div class="publication-doi">
-          DOI:
-          <a href="https://doi.org/10.1155/adpp/4687213" target="_blank">
-            https://doi.org/10.1155/adpp/4687213
-          </a>
-        </div>
-      </div>
+<img src="GM2.JPG" class="team-photo">
 
-      <div class="publication">
-        <div class="publication-title">
-          Díaz-Sánchez, L. M.; Chacón-Patiño, M. L.; Blanco-Tirado, C.; Marianny,; Combariza, Y.; Montoya, G. Comparative Metabolic Profiling of Wild and In Vitro Cultivated Cecropia Angustifolia Roots Fraction Reveals Conservation of Pentacyclic Triterpene Acid Biosynthesis. <em>Phytochemical Analysis</em>, 2025, 0, 1–11.
-        </div>
-        <div class="publication-doi">
-          DOI:
-          <a href="https://doi.org/10.1002/pca.70001" target="_blank">
-            https://doi.org/10.1002/pca.70001
-          </a>
-        </div>
-      </div>
-    </div>
+<p>
+Principal Investigator: Prof. Germán Montoya
+</p>
 
-    <div class="year-group" data-year="2023">
-      <div class="year-title">2023</div>
+</section>
 
-      <div class="publication">
-        <div class="publication-title">
-          Vasquez-Delgado, J. S.; Vivas-Moncayo, J. E.; Lopez-Cortes, J. V.; Combariza, M. Y.; Montoya, G. Pharmacokinetic Assessment and Phytochemical Triterpene Control from Cecropia Angustifolia Using Plant Biotechnology. <em>Phytochemical Analysis</em>, 2023, 34 (6).
-        </div>
-        <div class="publication-doi">
-          DOI:
-          <a href="https://doi.org/10.1002/pca.3252" target="_blank">
-            https://doi.org/10.1002/pca.3252
-          </a>
-        </div>
-      </div>
-    </div>
 
-    <div class="year-group" data-year="2021">
-      <div class="year-title">2021</div>
 
-      <div class="publication">
-        <div class="publication-title">
-          Gutiérrez, G.; Valencia, L. M.; Giraldo-Dávila, D.; Combariza, M. Y.; Galeano, E.; Balcazar, N.; Panay, A. J.; Jerez, A. M.; Montoya, G. Pentacyclic Triterpene Profile and Its Biosynthetic Pathway in Cecropia Telenitida as a Prospective Dietary Supplement. <em>Molecules</em>, 2021, 26 (4), 1–14.
-        </div>
-        <div class="publication-doi">
-          DOI:
-          <a href="https://doi.org/10.3390/molecules26041064" target="_blank">
-            https://doi.org/10.3390/molecules26041064
-          </a>
-        </div>
-      </div>
-    </div>
+<section>
 
-    <div class="year-group" data-year="2020">
-      <div class="year-title">2020</div>
+<h2>Technology Transfer & Innovation</h2>
 
-      <div class="publication">
-        <div class="publication-title">
-          Gutiérrez, G.; Giraldo-Dávila, D.; Combariza, M. Y.; Holzgrabe, U.; Tabares-Guevara, J. H.; Ramírez-Pineda, J. R.; Acín, S.; Muñoz, D. L.; Montoya, G.; Balcazar, N. Serjanic Acid Improves Immunometabolic Markers in a Diet-Induced Obesity Mouse Model. <em>Molecules</em>, 2020, 25 (7), 1486.
-        </div>
-        <div class="publication-doi">
-          DOI:
-          <a href="https://doi.org/10.3390/molecules25071486" target="_blank">
-            https://doi.org/10.3390/molecules25071486
-          </a>
-        </div>
-      </div>
-    </div>
+<p>
+Our research activities extend beyond experimental phytochemistry into translational development and pilot-scale implementation. Through collaboration with industrial partners and the creation of the spin-off Fitogénico S.A.S., the group contributes to the transfer of plant-derived technologies toward productive-sector applications.
+</p>
 
-    <div class="year-group" data-year="2018">
-      <div class="year-title">2018</div>
+<div class="poster-grid">
 
-      <div class="publication">
-        <div class="publication-title">
-          Mosquera, C.; Panay, A.; Montoya, G. Pentacyclic Triterpenes from Cecropia Telenitida Can Function as Inhibitors of 11β-Hydroxysteroid Dehydrogenase Type 1. <em>Molecules</em>, 2018, 23 (6), 1444.
-        </div>
-        <div class="publication-doi">
-          DOI:
-          <a href="https://doi.org/10.3390/molecules23061444" target="_blank">
-            https://doi.org/10.3390/molecules23061444
-          </a>
-        </div>
-      </div>
-    </div>
+<a href="fitogenico.html">
+<img src="FITOGENICO.png" class="poster-thumb">
+</a>
 
-    <div class="earlier-publication">
-      <strong>Earlier Publication</strong><br><br>
-      Montoya Peláez, G. L.; Sierra, J. A.; Alzate, F.; Holzgrabe, U.; Ramirez-Pineda, J. R. Pentacyclic Triterpenes from Cecropia Telenitida with Immunomodulatory Activity on Dendritic Cells. <em>Brazilian Journal of Pharmacognosy</em>, 2013, 23 (5), 754–761.<br>
-      DOI:
-      <a href="https://doi.org/10.1590/S0102-695X2013000500006" target="_blank">
-        https://doi.org/10.1590/S0102-695X2013000500006
-      </a>
-    </div>
-  </section>
+<a href="fitogenico-collage.html">
+<img src="GROUP_PLANT.jpg" class="poster-thumb">
+</a>
 
-  <section>
-    <h2>Contact</h2>
+</div>
 
-    <p>
-      Guillermo Montoya, PhD<br>
-      Email: gmontoya@icesi.edu.co<br>
-      Universidad Icesi – Cali, Colombia
-    </p>
-  </section>
+</section>
 
-  <footer>
-    Biotechnology and Natural Products Research Group – Universidad Icesi
-  </footer>
+
+
+<section>
+
+<h2>Research Posters</h2>
+
+<div class="poster-grid">
+
+<a href="pkpd.html">
+<img src="PKPD.png" class="poster-thumb">
+</a>
+
+<a href="plant-biotech.html">
+<img src="APPS2.png" class="poster-thumb">
+</a>
+
+<a href="fticrms.html">
+<img src="UHMS.png" class="poster-thumb">
+</a>
+
+<a href="cyp450.html">
+<img src="PTTOC.png" class="poster-thumb">
+</a>
+
+<a href="cannabis.html">
+<img src="Cannabis.png" class="poster-thumb">
+</a>
+
+<a href="capsicum1.html">
+<img src="CAP1.png" class="poster-thumb">
+</a>
+
+<a href="capsicum2.html">
+<img src="CAP2.png" class="poster-thumb">
+</a>
+
+</div>
+
+</section>
+
+
+
+<section>
+
+<h2>Publications</h2>
+
+<label for="yearFilter">Filter by year:</label>
+
+<select id="yearFilter" onchange="filterPublications()">
+<option value="all">All</option>
+<option value="2025">2025</option>
+<option value="2023">2023</option>
+<option value="2021">2021</option>
+<option value="2020">2020</option>
+<option value="2018">2018</option>
+</select>
+
+
+<div class="publication" data-year="2025">
+Vivas-Moncayo et al. (2025) Plant Cell Tiss Organ Cult.
+</div>
+
+<div class="publication" data-year="2025">
+Lopez-Cortes et al. (2025) Adv Pharmacol Pharm Sci.
+</div>
+
+<div class="publication" data-year="2025">
+Díaz-Sánchez et al. (2025) Phytochemical Analysis.
+</div>
+
+<div class="publication" data-year="2023">
+Vasquez-Delgado et al. (2023) Phytochemical Analysis.
+</div>
+
+<div class="publication" data-year="2021">
+Gutiérrez et al. (2021) Molecules.
+</div>
+
+<div class="publication" data-year="2020">
+Gutiérrez et al. (2020) Molecules.
+</div>
+
+<div class="publication" data-year="2018">
+Mosquera et al. (2018) Molecules.
+</div>
+
+
+</section>
+
+
+
+<footer>
+
+Biotechnology and Natural Products Research Group — Universidad Icesi
+
+</footer>
+
 
 </body>
 </html>
