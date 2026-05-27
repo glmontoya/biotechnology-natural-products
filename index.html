@@ -67,6 +67,19 @@ h2 {
   padding-bottom: 6px;
 }
 
+.project-metadata {
+  background: #f4f7fe;
+  border-left: 4px solid #2f4fa2;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border-radius: 0 4px 4px 0;
+}
+
+.project-metadata span {
+  margin-right: 20px;
+}
+
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -77,6 +90,12 @@ h2 {
 
 .team-card {
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-3px);
 }
 
 .team-photo {
@@ -175,16 +194,46 @@ select {
   background: #f8faff;
   border-left: 4px solid #4c6edb;
   border-radius: 4px;
+  position: relative;
 }
 
 .publication-title {
+  font-weight: normal;
+}
+
+.pi-highlight {
   font-weight: bold;
+  color: #000;
+}
+
+.publication-meta-row {
+  margin-top: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .publication-doi {
-  margin-top: 6px;
-  font-size: 14px;
   word-break: break-word;
+}
+
+.btn-citation {
+  background: #e6ebfb;
+  border: 1px solid #b8c6f0;
+  color: #2f4fa2;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.btn-citation:hover {
+  background: #2f4fa2;
+  color: white;
+  border-color: #2f4fa2;
 }
 
 .earlier-publication {
@@ -220,6 +269,54 @@ footer {
   font-size: 14px;
 }
 
+/* Modal Styles */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+  position: relative;
+  line-height: 1.5;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px; right: 15px;
+  font-size: 22px;
+  background: none; border: none;
+  cursor: pointer; color: #666;
+}
+
+.modal-close:hover { color: #000; }
+
+.modal-content h3 {
+  color: #2f4fa2;
+  margin-top: 0;
+  border-bottom: 2px solid #dce3fb;
+  padding-bottom: 6px;
+}
+
+.modal-links a {
+  color: #4c6edb;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.modal-links a:hover { text-decoration: underline; }
+
 @media (max-width: 700px) {
   header h1 {
     font-size: 32px;
@@ -244,10 +341,57 @@ function filterPublicationsByYear() {
     }
   }
 }
+
+function copyCitation(button, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const originalText = button.innerText;
+    button.innerText = "Copied!";
+    button.style.background = "#2e7d32";
+    button.style.color = "white";
+    button.style.borderColor = "#2e7d32";
+    setTimeout(() => {
+      button.innerText = originalText;
+      button.style.background = "";
+      button.style.color = "";
+      button.style.borderColor = "";
+    }, 2000);
+  });
+}
+
+function openProfile(name, role, research, email, linksHtml) {
+  document.getElementById("modalName").innerText = name;
+  document.getElementById("modalRole").innerText = role;
+  document.getElementById("modalResearch").innerHTML = "<strong>Research Area:</strong> " + research;
+  document.getElementById("modalEmail").innerHTML = "<strong>Contact:</strong> " + email;
+  document.getElementById("modalLinks").innerHTML = linksHtml;
+  document.getElementById("profileModal").style.display = "flex";
+}
+
+function closeProfile() {
+  document.getElementById("profileModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById("profileModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+}
 </script>
 </head>
 
 <body>
+
+<div id="profileModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeProfile()">&times;</button>
+    <h3 id="modalName">Name</h3>
+    <p style="font-style: italic; color: #555;" id="modalRole">Role</p>
+    <p id="modalResearch">Research</p>
+    <p id="modalEmail">Email</p>
+    <div class="modal-links" id="modalLinks"></div>
+  </div>
+</div>
 
 <header>
   <h1>Biotechnology and Natural Products</h1>
@@ -285,10 +429,11 @@ function filterPublicationsByYear() {
 
 <section>
   <h2>Team</h2>
+  <p style="font-size: 14px; color: #666; font-style: italic; margin-top:-10px; margin-bottom:20px;">Click on any team member card to view their complete academic profile.</p>
 
   <div class="team-grid">
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Guillermo Montoya, PhD', 'Group Leader', 'Biomass Valorization, Phytochemistry, Metabolomics and Plant Biotechnology', 'gmontoya@icesi.edu.co', '<a href=\'https://orcid.org/0000-0003-3963-9007\' target=\'_blank\'>ORCID</a><a href=\'https://scholar.google.com/citations?user=d5EIenEAAAAJ&hl=en\' target=\'_blank\'>Google Scholar</a>')">
       <img src="GM2.jpg" class="team-photo">
       <p>
         <strong>Guillermo Montoya, PhD</strong><br>
@@ -296,7 +441,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Esteban Castaño Llanos', 'PhD Student (2026–2030)', 'Phytochemical analysis, plant biotechnology and germplasm valorization', 'esteban.castano@icesi.edu.co', '')">
       <img src="Esteban.jpeg" class="team-photo">
       <p>
         <strong>Esteban Castaño Llanos</strong><br>
@@ -304,7 +449,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Catherine Muñoz', 'MSc Candidate', 'Biotechnology and metabolic profiling', 'catherine.munoz@icesi.edu.co', '')">
       <img src="Catherine.jpeg" class="team-photo">
       <p>
         <strong>Catherine Muñoz</strong><br>
@@ -312,7 +457,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Maira Alejandra Vega Muñoz', 'MSc Alumna', 'Capsicum genomics and phenotyping', 'maira.vega@icesi.edu.co', '')">
       <img src="Maira Alejandra.jpg" class="team-photo">
       <p>
         <strong>Maira Alejandra Vega Muñoz</strong><br>
@@ -320,7 +465,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Juan Esteban Vivas', 'MSc Alumnus', 'Transcriptomics and metabolomics of secondary metabolites', 'juan.vivas@icesi.edu.co', '')">
       <img src="Juan Esteban vivas.jpg" class="team-photo">
       <p>
         <strong>Juan Esteban Vivas</strong><br>
@@ -328,7 +473,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Diego J. Enriquez', 'MSc Alumnus', 'Cannabis sativa chemotypic diversity', 'diego.enriquez@icesi.edu.co', '')">
       <img src="Diego.jpg" class="team-photo">
       <p>
         <strong>Diego J. Enriquez</strong><br>
@@ -336,7 +481,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Edwin F. Revelo', 'MSc Alumnus', 'Plant metabolic platforms', 'edwin.revelo@icesi.edu.co', '')">
       <img src="Edwin.jpeg" class="team-photo">
       <p>
         <strong>Edwin F. Revelo</strong><br>
@@ -344,7 +489,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Lina María Acosta Hilamo', 'MSc Alumna', 'Phytochemical extraction scale-up', 'lina.acosta@icesi.edu.co', '')">
       <img src="Lina.jpeg" class="team-photo">
       <p>
         <strong>Lina María Acosta Hilamo</strong><br>
@@ -352,7 +497,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Johanna V. López', 'MSc Alumna', 'Immunometabolic pharmacological markers', 'johanna.lopez@icesi.edu.co', '')">
       <img src="Johanna.jpeg" class="team-photo">
       <p>
         <strong>Johanna V. López</strong><br>
@@ -360,7 +505,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Juan Sebastián Vásquez', 'MSc Alumnus', 'Pharmacokinetic assessments of natural products', 'sebastian.vasquez@icesi.edu.co', '')">
       <img src="Sebastian.jpeg" class="team-photo">
       <p>
         <strong>Juan Sebastián Vásquez</strong><br>
@@ -368,7 +513,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Diana Penagos', 'MSc Alumna', 'Agroindustrial biomass valorization', 'diana.penagos@icesi.edu.co', '')">
       <img src="Diana.jpg" class="team-photo">
       <p>
         <strong>Diana Penagos</strong><br>
@@ -376,7 +521,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Gustavo Gutiérrez', 'MSc Alumnus', 'Biosynthetic pathways of pentacyclic triterpenes', 'gustavo.gutierrez@icesi.edu.co', '')">
       <img src="gustavo.jpeg" class="team-photo">
       <p>
         <strong>Gustavo Gutiérrez</strong><br>
@@ -384,7 +529,7 @@ function filterPublicationsByYear() {
       </p>
     </div>
 
-    <div class="team-card">
+    <div class="team-card" onclick="openProfile('Engr. Manuela Henao Jaramillo', 'Grant Manager', 'Project Management – Capsicum Bioeconomy Project', 'manuela.henao@icesi.edu.co', '')">
       <img src="Manuela.jpeg" class="team-photo">
       <p>
         <strong> Engr.Manuela Henao Jaramillo</strong><br>
@@ -397,6 +542,12 @@ function filterPublicationsByYear() {
   
 <section>
   <h2>Technology Transfer: Spin-off Fitogénico S.A.S.</h2>
+  
+  <div class="project-metadata">
+    <span><strong>Status:</strong> Active</span>
+    <span><strong>Funding Agency:</strong> Minciencias</span>
+    <span><strong>Grant:</strong> Capsicum Bioeconomy Project</span>
+  </div>
 
   <p>
     Fitogénico S.A.S. represents a translational pathway connecting phytochemical research with applied development of plant-derived products and biomass-based innovation platforms (Capsicum Bioeconomy Grant).
@@ -414,23 +565,23 @@ function filterPublicationsByYear() {
 <section>
   <h2>Cecropia hairy root culture for triterpene production</h2>
 
+  <div class="project-metadata">
+    <span><strong>Status:</strong> Active</span>
+    <span><strong>Funding Agency:</strong> Universidad Icesi / Minciencias</span>
+    <span><strong>Core Focus:</strong> Secondary Metabolites Scaling</span>
+  </div>
+
   <p>
     Establishment and scale-up optimization of <em>Cecropia</em> hairy root cultures in specialized bioreactor environments, targeting the continuous and controlled biosynthesis of bioactive pentacyclic triterpene acids.
   </p>
 
   <div class="group-photo-grid">
-    <div class="group-photo-card">
-      <img src="Cecropia HR culture.jpeg" alt="Cecropia hairy root culture view 1">
-    </div>
-    <div class="group-photo-card">
-      <img src="Cecropia HR culture 2.jpeg" alt="Cecropia hairy root culture view 2">
-    </div>
-    <div class="group-photo-card">
-      <img src="Cecropia HR culture 3.jpeg" alt="Cecropia hairy root culture view 3">
-    </div>
-    <div class="group-photo-card">
-      <img src="Cecropia HR culture 4.jpeg" alt="Cecropia hairy root culture view 4">
-    </div>
+    <div class="group-photo-card"><img src="Cecropia HR culture.jpeg" alt="Cecropia hairy root culture view 1"></div>
+    <div class="group-photo-card"><img src="Cecropia HR culture 2.jpeg" alt="Cecropia hairy root culture view 2"></div>
+    <div class="group-photo-card"><img src="Cecropia HR culture 3.jpeg" alt="Cecropia hairy root culture view 3"></div>
+    <div class="group-photo-card"><img src="Cecropia HR culture 4.jpeg" alt="Cecropia hairy root culture view 4"></div>
+    <div class="group-photo-card"><img src="Cecropia HR culture 5.jpeg" alt="Cecropia hairy root culture view 5"></div>
+    <div class="group-photo-card"><img src="Cecropia HR culture 6.jpeg" alt="Cecropia hairy root culture view 6"></div>
   </div>
 </section>
 
@@ -442,7 +593,7 @@ function filterPublicationsByYear() {
   </p>
 
   <p>
-    The 40 L bubble column pilot unit exemplifies the infrastructure available for bioprocess testing and technology transfer workflows.
+    Currently, our engineering workflows are actively focused on <strong>scaling laboratory culture conditions up to the 40 L bubble column pilot unit</strong>, optimizing bioprocess parameters for the large-scale production of <em>Cecropia</em> pentacyclic triterpene acids (TPAs) established in our hairy root systems.
   </p>
 
   <img src="bubble-column-40L.jpg.jpeg" class="feature-photo" alt="40 L bubble column pilot unit">
@@ -524,45 +675,61 @@ function filterPublicationsByYear() {
 
     <div class="publication">
       <div class="publication-title">
-        Castaño-Llanos, Esteban; Vega-Muñoz, Maira Alejandra; Grisales-Vasquez, Yohana; Loaiza-Loaiza, Oscar Alfonso; Henao-Rojas, Juan Camilo; Montoya, Guillermo. Capsicum Germplasm Targeted Valorization Using Physicochemical and Phytochemical Descriptors. <em>Frontiers in Sustainable Food Systems</em>, 2025.
+        Castaño-Llanos, Esteban; Vega-Muñoz, Maira Alejandra; Grisales-Vasquez, Yohana; Loaiza-Loaiza, Oscar Alfonso; Henao-Rojas, Juan Camilo; <span class="pi-highlight">Montoya, Guillermo</span>. Capsicum Germplasm Targeted Valorization Using Physicochemical and Phytochemical Descriptors. <em>Frontiers in Sustainable Food Systems</em>, 2025.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Castaño-Llanos, E., Vega-Muñoz, M. A., Grisales-Vasquez, Y., Loaiza-Loaiza, O. A., Henao-Rojas, J. C., & Montoya, G. (2025). Capsicum Germplasm Targeted Valorization Using Physicochemical and Phytochemical Descriptors. Frontiers in Sustainable Food Systems.')">Copy Citation</button>
       </div>
     </div>
 
     <div class="publication">
       <div class="publication-title">
-        Díaz-Sánchez, Luis M; Chacón-Patiño, Martha L; Blanco-Tirado, Cristian; Combariza, Marianny Y; Montoya, Guillermo. Comparative metabolic profiling of wild and in vitro cultivated Cecropia angustifolia roots fraction reveals conservation of pentacyclic triterpene acid biosynthesis. <em>Phytochemical Analysis</em>, 2025.
+        Díaz-Sánchez, Luis M; Chacón-Patiño, Martha L; Blanco-Tirado, Cristian; Combariza, Marianny Y; <span class="pi-highlight">Montoya, Guillermo</span>. Comparative metabolic profiling of wild and in vitro cultivated Cecropia angustifolia roots fraction reveals conservation of pentacyclic triterpene acid biosynthesis. <em>Phytochemical Analysis</em>, 2025.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Díaz-Sánchez, L. M., Chacón-Patiño, M. L., Blanco-Tirado, C., Combariza, M. Y., & Montoya, G. (2025). Comparative metabolic profiling of wild and in vitro cultivated Cecropia angustifolia roots fraction reveals conservation of pentacyclic triterpene acid biosynthesis. Phytochemical Analysis.')">Copy Citation</button>
       </div>
     </div>
 
     <div class="publication">
       <div class="publication-title">
-        Vega-Muñoz, Maira A; López-Hernández, Felipe; Cortés, Andrés J; Roda, Federico; Castaño, Esteban; Montoya, Guillermo; Henao-Rojas, Juan Camilo. Pangenomic and Phenotypic Characterization of Colombian Capsicum Germplasm Reveals the Genetic Basis of Fruit Quality Traits. <em>International Journal of Molecular Sciences</em>, 2025.
+        Vega-Muñoz, Maira A; López-Hernández, Felipe; Cortés, Andrés J; Roda, Federico; Castaño, Esteban; <span class="pi-highlight">Montoya, Guillermo</span>; Henao-Rojas, Juan Camilo. Pangenomic and Phenotypic Characterization of Colombian Capsicum Germplasm Reveals the Genetic Basis of Fruit Quality Traits. <em>International Journal of Molecular Sciences</em>, 2025.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Vega-Muñoz, M. A., López-Hernández, F., Cortés, A. J., Roda, F., Castaño, E., Montoya, G., & Henao-Rojas, J. C. (2025). Pangenomic and Phenotypic Characterization of Colombian Capsicum Germplasm Reveals the Genetic Basis of Fruit Quality Traits. International Journal of Molecular Sciences.')">Copy Citation</button>
       </div>
     </div>
 
     <div class="publication">
       <div class="publication-title">
-        Lopez-Cortes, Johanna Valentina; Acin-Martinez, Sergio; Montoya, Guillermo; Balcazar, Norman. Cecropia angustifolia pentacyclic triterpene acids and Sacha Inchi oil improve carbohydrate metabolism and inflammation in prediabetic mice. <em>Advances in Pharmacological and Pharmaceutical Sciences</em>, 2025.
+        Lopez-Cortes, Johanna Valentina; Acin-Martinez, Sergio; <span class="pi-highlight">Montoya, Guillermo</span>; Balcazar, Norman. Cecropia angustifolia pentacyclic triterpene acids and Sacha Inchi oil improve carbohydrate metabolism and inflammation in prediabetic mice. <em>Advances in Pharmacological and Pharmaceutical Sciences</em>, 2025.
       </div>
-      <div class="publication-doi">
-        DOI:
-        <a href="https://doi.org/10.1155/adpp/4687213" target="_blank">https://doi.org/10.1155/adpp/4687213</a>
-      </div>
-    </div>
-
-    <div class="publication">
-      <div class="publication-title">
-        Parra-Londono, Sebastian; López-Hernández, Felipe; Montoya, Guillermo; Henao-Rojas, Juan Camilo; Ossa-Ossa, Gustavo A; Cortés, Andrés J. Merging Phenotypic Stability Analysis and Genomic Prediction for Multi-Environment Breeding in Capsicum spp. <em>Agronomy</em>, 2025.
+      <div class="publication-meta-row">
+        <div class="publication-doi">
+          DOI: <a href="https://doi.org/10.1155/adpp/4687213" target="_blank">https://doi.org/10.1155/adpp/4687213</a>
+        </div>
+        <button class="btn-citation" onclick="copyCitation(this, 'Lopez-Cortes, J. V., Acin-Martinez, S., Montoya, G., & Balcazar, N. (2025). Cecropia angustifolia pentacyclic triterpene acids and Sacha Inchi oil improve carbohydrate metabolism and inflammation in prediabetic mice. Advances in Pharmacological and Pharmaceutical Sciences. https://doi.org/10.1155/adpp/4687213')">Copy Citation</button>
       </div>
     </div>
 
     <div class="publication">
       <div class="publication-title">
-        Vivas-Moncayo, Juan E; Muñoz-Bonilla, Paula C; Rodriguez-Santa, Laura M; Rodriguez-Ararat, Adrián C; Montoya, Guillermo. Integrative metabolomic and transcriptomic analysis reveals CYP450-driven biosynthesis of pentacyclic triterpene acids in Cecropia angustifolia. <em>Plant Cell, Tissue and Organ Culture (PCTOC)</em>, 2025.
+        Parra-Londono, Sebastian; López-Hernández, Felipe; <span class="pi-highlight">Montoya, Guillermo</span>; Henao-Rojas, Juan Camilo; Ossa-Ossa, Gustavo A; Cortés, Andrés J. Merging Phenotypic Stability Analysis and Genomic Prediction for Multi-Environment Breeding in Capsicum spp. <em>Agronomy</em>, 2025.
       </div>
-      <div class="publication-doi">
-        DOI:
-        <a href="https://doi.org/10.1007/s11240-025-03285-y" target="_blank">https://doi.org/10.1007/s11240-025-03285-y</a>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Parra-Londono, S., López-Hernández, F., Montoya, G., Henao-Rojas, J. C., Ossa-Ossa, G. A., & Cortés, A. J. (2025). Merging Phenotypic Stability Analysis and Genomic Prediction for Multi-Environment Breeding in Capsicum spp. Agronomy.')">Copy Citation</button>
+      </div>
+    </div>
+
+    <div class="publication">
+      <div class="publication-title">
+        Vivas-Moncayo, Juan E; Muñoz-Bonilla, Paula C; Rodriguez-Santa, Laura M; Rodriguez-Ararat, Adrián C; <span class="pi-highlight">Montoya, Guillermo</span>. Integrative metabolomic and transcriptomic analysis reveals CYP450-driven biosynthesis of pentacyclic triterpene acids in Cecropia angustifolia. <em>Plant Cell, Tissue and Organ Culture (PCTOC)</em>, 2025.
+      </div>
+      <div class="publication-meta-row">
+        <div class="publication-doi">
+          DOI: <a href="https://doi.org/10.1007/s11240-025-03285-y" target="_blank">https://doi.org/10.1007/s11240-025-03285-y</a>
+        </div>
+        <button class="btn-citation" onclick="copyCitation(this, 'Vivas-Moncayo, J. E., Muñoz-Bonilla, P. C., Rodriguez-Santa, L. M., Rodriguez-Ararat, A. C., & Montoya, G. (2025). Integrative metabolomic and transcriptomic analysis reveals CYP450-driven biosynthesis of pentacyclic triterpene acids in Cecropia angustifolia. Plant Cell, Tissue and Organ Culture (PCTOC). https://doi.org/10.1007/s11240-025-03285-y')">Copy Citation</button>
       </div>
     </div>
   </div>
@@ -572,7 +739,10 @@ function filterPublicationsByYear() {
 
     <div class="publication">
       <div class="publication-title">
-        Diego J. Enríquez, Julio C. Alonso, Lucas Hille, Stefan Brand, Ulrike Holzgrabe, Daniela Vergara, Guillermo Montoya, Yesid A. Ramírez. Unveiling Colombia's medicinal Cannabis sativa treasure trove: Phenotypic and Chemotypic diversity in legal cultivation. <em>Phytochemical Analysis</em>, 2024.
+        Diego J. Enríquez, Julio C. Alonso, Lucas Hille, Stefan Brand, Ulrike Holzgrabe, Daniela Vergara, <span class="pi-highlight">Guillermo Montoya</span>, Yesid A. Ramírez. Unveiling Colombia's medicinal Cannabis sativa treasure trove: Phenotypic and Chemotypic diversity in legal cultivation. <em>Phytochemical Analysis</em>, 2024.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Enríquez, D. J., Alonso, J. C., Hille, L., Brand, S., Holzgrabe, U., Vergara, D., Montoya, G., & Ramírez, Y. A. (2024). Unveiling Colombia\'s medicinal Cannabis sativa treasure trove: Phenotypic and Chemotypic diversity in legal cultivation. Phytochemical Analysis.')">Copy Citation</button>
       </div>
     </div>
   </div>
@@ -582,11 +752,13 @@ function filterPublicationsByYear() {
 
     <div class="publication">
       <div class="publication-title">
-        Vasquez-Delgado, Juan; Vivas-Moncayo, Juan; Lopez-Cortes, Johanna; Combariza, Marianny; Montoya, Guillermo. Pharmacokinetic assessment and phytochemical triterpene control from Cecropia angustifolia using plant biotechnology. <em>Phytochemical Analysis</em>, 2023.
+        Vasquez-Delgado, Juan; Vivas-Moncayo, Juan; Lopez-Cortes, Johanna; Combariza, Marianny; <span class="pi-highlight">Montoya, Guillermo</span>. Pharmacokinetic assessment and phytochemical triterpene control from Cecropia angustifolia using plant biotechnology. <em>Phytochemical Analysis</em>, 2023.
       </div>
-      <div class="publication-doi">
-        DOI:
-        <a href="https://doi.org/10.1002/pca.3252" target="_blank">https://doi.org/10.1002/pca.3252</a>
+      <div class="publication-meta-row">
+        <div class="publication-doi">
+          DOI: <a href="https://doi.org/10.1002/pca.3252" target="_blank">https://doi.org/10.1002/pca.3252</a>
+        </div>
+        <button class="btn-citation" onclick="copyCitation(this, 'Vasquez-Delgado, J., Vivas-Moncayo, J., Lopez-Cortes, J., Combariza, M., & Montoya, G. (2023). Pharmacokinetic assessment and phytochemical triterpene control from Cecropia angustifolia using plant biotechnology. Phytochemical Analysis. https://doi.org/10.1002/pca.3252')">Copy Citation</button>
       </div>
     </div>
   </div>
@@ -596,17 +768,22 @@ function filterPublicationsByYear() {
 
     <div class="publication">
       <div class="publication-title">
-        Gutiérrez, Gustavo; Valencia, Laura Marcela; Giraldo-Dávila, Deisy; Combariza, Marianny Y; Galeano, Elkin; Balcazar, Norman; Panay, Aram J; Jerez, Alejandra Maria; Montoya, Guillermo. Pentacyclic triterpene profile and its biosynthetic pathway in Cecropia Telenitida as a prospective dietary supplement. <em>Molecules</em>, 2021.
+        Gutiérrez, Gustavo; Valencia, Laura Marcela; Giraldo-Dávila, Deisy; Combariza, Marianny Y; Galeano, Elkin; Balcazar, Norman; Panay, Aram J; Jerez, Alejandra Maria; <span class="pi-highlight">Montoya, Guillermo</span>. Pentacyclic triterpene profile and its biosynthetic pathway in Cecropia Telenitida as a prospective dietary supplement. <em>Molecules</em>, 2021.
       </div>
-      <div class="publication-doi">
-        DOI:
-        <a href="https://doi.org/10.3390/molecules26041064" target="_blank">https://doi.org/10.3390/molecules26041064</a>
+      <div class="publication-meta-row">
+        <div class="publication-doi">
+          DOI: <a href="https://doi.org/10.3390/molecules26041064" target="_blank">https://doi.org/10.3390/molecules26041064</a>
+        </div>
+        <button class="btn-citation" onclick="copyCitation(this, 'Gutiérrez, G., Valencia, L. M., Giraldo-Dávila, D., Combariza, M. Y., Galeano, E., Balcazar, N., Panay, A. J., Jerez, A. M., & Montoya, G. (2021). Pentacyclic triterpene profile and its biosynthetic pathway in Cecropia Telenitida as a prospective dietary supplement. Molecules. https://doi.org/10.3390/molecules26041064')">Copy Citation</button>
       </div>
     </div>
 
     <div class="publication">
       <div class="publication-title">
-        Montoya, Guillermo; Gutierrez, Maria I; Giraldo, Juan D; Jaramillo, Luis D; Ruiz-Sandoval, Jeyson; Orozco, Sandra; Orozco, Ferley; Ward, John; Rojas, Giovanni; Villegas-Torres, Maria F. Sustainable sugarcane vinasse biorefinement for trans-aconitic acid-based biopolymer synthesis and bioenergy generation. <em>Bioresource Technology Reports</em>, 2021.
+        <span class="pi-highlight">Montoya, Guillermo</span>; Gutierrez, Maria I; Giraldo, Juan D; Jaramillo, Luis D; Ruiz-Sandoval, Jeyson; Orozco, Sandra; Orozco, Ferley; Ward, John; Rojas, Giovanni; Villegas-Torres, Maria F. Sustainable sugarcane vinasse biorefinement for trans-aconitic acid-based biopolymer synthesis and bioenergy generation. <em>Bioresource Technology Reports</em>, 2021.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Montoya, G., Gutierrez, M. I., Giraldo, J. D., Jaramillo, L. D., Ruiz-Sandoval, J., Orozco, S., Orozco, F., Ward, J., Rojas, G., & Villegas-Torres, M. F. (2021). Sustainable sugarcane vinasse biorefinement for trans-aconitic acid-based biopolymer synthesis and bioenergy generation. Bioresource Technology Reports.')">Copy Citation</button>
       </div>
     </div>
   </div>
@@ -616,11 +793,13 @@ function filterPublicationsByYear() {
 
     <div class="publication">
       <div class="publication-title">
-        Gutiérrez, Gustavo; Giraldo-Dávila, Deisy; Combariza, Marianny Y; Holzgrabe, Ulrike; Tabares-Guevara, Jorge Humberto; Ramírez-Pineda, José Robinson; Acín, Sergio; Muñoz, Diana Lorena; Montoya, Guillermo; Balcazar, Norman. Serjanic acid improves immunometabolic markers in a diet-induced obesity mouse model. <em>Molecules</em>, 2020.
+        Gutiérrez, Gustavo; Giraldo-Dávila, Deisy; Combariza, Marianny Y; Holzgrabe, Ulrike; Tabares-Guevara, Jorge Humberto; Ramírez-Pineda, José Robinson; Acín, Sergio; Muñoz, Diana Lorena; <span class="pi-highlight">Montoya, Guillermo</span>; Balcazar, Norman. Serjanic acid improves immunometabolic markers in a diet-induced obesity mouse model. <em>Molecules</em>, 2020.
       </div>
-      <div class="publication-doi">
-        DOI:
-        <a href="https://doi.org/10.3390/molecules25071486" target="_blank">https://doi.org/10.3390/molecules25071486</a>
+      <div class="publication-meta-row">
+        <div class="publication-doi">
+          DOI: <a href="https://doi.org/10.3390/molecules25071486" target="_blank">https://doi.org/10.3390/molecules25071486</a>
+        </div>
+        <button class="btn-citation" onclick="copyCitation(this, 'Gutiérrez, G., Giraldo-Dávila, D., Combariza, M. Y., Holzgrabe, U., Tabares-Guevara, J. H., Ramírez-Pineda, J. R., Acín, S., Muñoz, D. L., Montoya, G., & Balcazar, N. (2020). Serjanic acid improves immunometabolic markers in a diet-induced obesity mouse model. Molecules. https://doi.org/10.3390/molecules25071486')">Copy Citation</button>
       </div>
     </div>
   </div>
@@ -630,13 +809,19 @@ function filterPublicationsByYear() {
 
     <div class="publication">
       <div class="publication-title">
-        Penagos-Calvete, Diana; Guauque-Medina, Jonathan; Villegas-Torres, María Francisca; Montoya, Guillermo. Analysis of triacylglycerides, carotenoids and capsaicinoids as disposable molecules from Capsicum agroindustry. <em>Horticulture, Environment, and Biotechnology</em>, 2019.
+        Penagos-Calvete, Diana; Guauque-Medina, Jonathan; Villegas-Torres, María Francisca; <span class="pi-highlight">Montoya, Guillermo</span>. Analysis of triacylglycerides, carotenoids and capsaicinoids as disposable molecules from Capsicum agroindustry. <em>Horticulture, Environment, and Biotechnology</em>, 2019.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Penagos-Calvete, D., Guauque-Medina, J., Villegas-Torres, M. F., & Montoya, G. (2019). Analysis of triacylglycerides, carotenoids and capsaicinoids as disposable molecules from Capsicum agroindustry. Horticulture, Environment, and Biotechnology.')">Copy Citation</button>
       </div>
     </div>
 
     <div class="publication">
       <div class="publication-title">
-        Penagos-Calvete, Diana; Duque, Valeria; Marimon, Claudia; Parra, Diana M; Restrepo-Arango, Sandra K; Scherf-Clavel, Oliver; Holzgrabe, Ulrike; Montoya, Guillermo; Salamanca, Constain H. Glycerolipid composition and advanced physicochemical considerations of sacha inchi oil toward cosmetic products formulation. <em>Cosmetics</em>, 2019.
+        Penagos-Calvete, Diana; Duque, Valeria; Marimon, Claudia; Parra, Diana M; Restrepo-Arango, Sandra K; Scherf-Clavel, Oliver; Holzgrabe, Ulrike; <span class="pi-highlight">Montoya, Guillermo</span>; Salamanca, Constain H. Glycerolipid composition and advanced physicochemical considerations of sacha inchi oil toward cosmetic products formulation. <em>Cosmetics</em>, 2019.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Penagos-Calvete, D., Duque, V., Marimon, C., Parra, D. M., Restrepo-Arango, S. K., Scherf-Clavel, O., Holzgrabe, U., Montoya, G., & Salamanca, C. H. (2019). Glycerolipid composition and advanced physicochemical considerations of sacha inchi oil toward cosmetic products formulation. Cosmetics.')">Copy Citation</button>
       </div>
     </div>
   </div>
@@ -646,17 +831,22 @@ function filterPublicationsByYear() {
 
     <div class="publication">
       <div class="publication-title">
-        Mosquera, Catalina; Panay, Aram Joel; Montoya, Guillermo. Pentacyclic Triterpenes from Cecropia telenitida Can Function as Inhibitors of 11β-Hydroxysteroid Dehydrogenase Type 1. <em>Molecules</em>, 2018.
+        Mosquera, Catalina; Panay, Aram Joel; <span class="pi-highlight">Montoya, Guillermo</span>. Pentacyclic Triterpenes from Cecropia telenitida Can Function as Inhibitors of 11β-Hydroxysteroid Dehydrogenase Type 1. <em>Molecules</em>, 2018.
       </div>
-      <div class="publication-doi">
-        DOI:
-        <a href="https://doi.org/10.3390/molecules23061444" target="_blank">https://doi.org/10.3390/molecules23061444</a>
+      <div class="publication-meta-row">
+        <div class="publication-doi">
+          DOI: <a href="https://doi.org/10.3390/molecules23061444" target="_blank">https://doi.org/10.3390/molecules23061444</a>
+        </div>
+        <button class="btn-citation" onclick="copyCitation(this, 'Mosquera, C., Panay, A. J., & Montoya, G. (2018). Pentacyclic Triterpenes from Cecropia telenitida Can Function as Inhibitors of 11β-Hydroxysteroid Dehydrogenase Type 1. Molecules. https://doi.org/10.3390/molecules23061444')">Copy Citation</button>
       </div>
     </div>
 
     <div class="publication">
       <div class="publication-title">
-        Montoya, Guillermo; Gutiérrez, Gustavo; Ellena, Javier; Panay, Aram J. Spergulagenic Acid A: Isolation and single crystal structure elucidation. <em>Journal of Molecular Structure</em>, 2018.
+        <span class="pi-highlight">Montoya, Guillermo</span>; Gutiérrez, Gustavo; Ellena, Javier; Panay, Aram J. Spergulagenic Acid A: Isolation and single crystal structure elucidation. <em>Journal of Molecular Structure</em>, 2018.
+      </div>
+      <div class="publication-meta-row">
+        <button class="btn-citation" onclick="copyCitation(this, 'Montoya, G., Gutiérrez, G., Ellena, J., & Panay, A. J. (2018). Spergulagenic Acid A: Isolation and single crystal structure elucidation. Journal of Molecular Structure.')">Copy Citation</button>
       </div>
     </div>
   </div>
@@ -664,19 +854,19 @@ function filterPublicationsByYear() {
   <div class="earlier-publication">
     <strong>Earlier Publications</strong><br><br>
 
-    Montoya, Guillermo; Londono, July; Cortes, Paola; Izquierdo, Olga. Quantitation of trans-aconitic acid in different stages of the sugar-manufacturing process. <em>Journal of Agricultural and Food Chemistry</em>, 2014.<br><br>
+    <span class="pi-highlight">Montoya, Guillermo</span>; Londono, July; Cortes, Paola; Izquierdo, Olga. Quantitation of trans-aconitic acid in different stages of the sugar-manufacturing process. <em>Journal of Agricultural and Food Chemistry</em>, 2014.<br><br>
 
-    Peláez, Guillermo L Montoya; Sierra, Jelver A; Alzate, Fernando; Holzgrabe, Ulrike; Ramirez-Pineda, José R. Pentacyclic triterpenes from Cecropia telenitida with immunomodulatory activity on dendritic cells. <em>Revista Brasileira de Farmacognosia</em>, 2013.<br><br>
+    Peláez, Guillermo L <span class="pi-highlight">Montoya</span>; Sierra, Jelver A; Alzate, Fernando; Holzgrabe, Ulrike; Ramirez-Pineda, José R. Pentacyclic triterpenes from Cecropia telenitida with immunomodulatory activity on dendritic cells. <em>Revista Brasileira de Farmacognosia</em>, 2013.<br><br>
 
-    Colorado-Ríos, Jhonny; Muñoz, Diana; Montoya, Guillermo; Márquez, Diana; Márquez, Maria-Elena; López, Juan; Martínez, Alejandro. HPLC-ESI-IT-MS/MS analysis and biological activity of triterpene glycosides from the Colombian marine sponge Ectyoplasia ferox. <em>Marine Drugs</em>, 2013.<br><br>
+    Colorado-Ríos, Jhonny; Muñoz, Diana; <span class="pi-highlight">Montoya, Guillermo</span>; Márquez, Diana; Márquez, Maria-Elena; López, Juan; Martínez, Alejandro. HPLC-ESI-IT-MS/MS analysis and biological activity of triterpene glycosides from the Colombian marine sponge Ectyoplasia ferox. <em>Marine Drugs</em>, 2013.<br><br>
 
-    Yassin, Lina M; Londoño, Julián; Montoya, Guillermo; De Sanctis, Juan B; Rojas, Mauricio; Ramírez, Luis A; García, Luis F; Vásquez, Gloria. Atherosclerosis development in SLE patients is not determined by monocytes ability to bind/endocytose Ox-LDL. <em>Autoimmunity</em>, 2011.<br><br>
+    Yassin, Lina M; Londoño, Julián; <span class="pi-highlight">Montoya, Guillermo</span>; De Sanctis, Juan B; Rojas, Mauricio; Ramírez, Luis A; García, Luis F; Vásquez, Gloria. Atherosclerosis development in SLE patients is not determined by monocytes ability to bind/endocytose Ox-LDL. <em>Autoimmunity</em>, 2011.<br><br>
 
-    Montoya, Guillermo; Jimenez, Nora. False sugar sequence phenomenon and structural analysis of α-hederin and hederacoside C through electrospray ionization and multi-stage tandem mass spectrometry. <em>Vitae</em>, 2011.<br><br>
+    <span class="pi-highlight">Montoya, Guillermo</span>; Jimenez, Nora. False sugar sequence phenomenon and structural analysis of α-hederin and hederacoside C through electrospray ionization and multi-stage tandem mass spectrometry. <em>Vitae</em>, 2011.<br><br>
 
-    Montoya, Guillermo; Arango, Gabriel J; Ramírez‐Pineda, José R. Rapid differentiation of isobaric and positional isomers of structurally related glycosides from Phytolacca bogotensis. <em>Rapid Communications in Mass Spectrometry</em>, 2009.<br><br>
+    <span class="pi-highlight">Montoya, Guillermo</span>; Arango, Gabriel J; Ramírez‐Pineda, José R. Rapid differentiation of isobaric and positional isomers of structurally related glycosides from Phytolacca bogotensis. <em>Rapid Communications in Mass Spectrometry</em>, 2009.<br><br>
 
-    Montoya, Guillermo; Arango, Gabriel J; Unger, Matthias; Holzgrabe, Ulrike. O-glycoside sequence of pentacyclic triterpene saponins from Phytolacca bogotensis using HPLC-ESI/multi-stage tandem mass spectrometry. <em>Phytochemical Analysis</em>, 2009.
+    <span class="pi-highlight">Montoya, Guillermo</span>; Arango, Gabriel J; Unger, Matthias; Holzgrabe, Ulrike. O-glycoside sequence of pentacyclic triterpene saponins from Phytolacca bogotensis using HPLC-ESI/multi-stage tandem mass spectrometry. <em>Phytochemical Analysis</em>, 2009.
   </div>
 </section>
 
